@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css">
+</head>
+<style>
+    /* styles.css */
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+    }
+
+    div {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 400px;
+        margin: 50px auto;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    p {
+        color: #555;
+    }
+
+    #input {
+        font-size: 16px;
+
+        padding: 8px;
+        width: calc(87% - 16px);
+        margin-bottom: 18px;
+        border-radius: 10px;
+        box-sizing: border-box;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 9px 13px;
+        background-color: #4c65af;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #42599e;
+    }
+
+    pre {
+        font-family: 'Courier New', monospace;
+        white-space: pre-wrap;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 4px;
+        overflow: auto;
+        max-height: 200px;
+        margin-top: 10px;
+        border: 1px solid #ddd;
+    }
+</style>
+
+<body>
+    <div>
+        <h1>Go websockets TODO example</h1>
+        <p>Available commands for todo app</p>
+        <p>- add [task]</p>
+        <p>- done [task]</p>
+        <input id="input" type="text" size="40" />
+        <button onclick="send()">Send</button>
+        <pre id="output"></pre>
+    </div>
+
+    <script>
+        var input = document.getElementById("input");
+        var output = document.getElementById("output");
+        var socket = new WebSocket("ws://localhost:8080/todo");
+
+        socket.onopen = function () {
+            output.innerHTML += "Status: Connected\n";
+        };
+
+        socket.onmessage = function (e) {
+            output.innerHTML += "\nServer: " + e.data + "\n";
+        };
+
+        function send() {
+            socket.send(input.value);
+            input.value = "";
+        }
+    </script>
+</body>
+
+</html>
